@@ -1,0 +1,6 @@
+---
+mlag:
+  domain-id: leafs
+  local-interface: 4090
+  peer-address: 10.0.199.255
+  peer-link:Port-Channel999

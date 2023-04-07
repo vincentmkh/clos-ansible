@@ -1,0 +1,9 @@
+---
+- name: save running to startup when modified
+  arista.eos.eos_config:
+    save_when: modified
+
+# - name: backup running config to tftp
+#   arista.eos.eos_command:
+#     commands:
+#     - command: copy run tftp://"{{ tftp_server}}"/"{{ inventory_hostname }}".cfg

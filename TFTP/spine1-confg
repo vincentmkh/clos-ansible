@@ -1,0 +1,154 @@
+! device: spine1 (cEOSLab, EOS-4.28.3M-28837868.4283M (engineering build))
+!
+no aaa root
+!
+username admin privilege 15 role netadmin secret sha512 $6$6nr26U4twX87GYNl$sGgOxgBc8zsG.R1a54k5S4w0a/BRpg2rDEI5CT4Nj5LizSWneLvTOfJk4Miw.iWMKzXPzMJT.tJZDMk4GAFV51
+!
+switchport default mode routed
+!
+transceiver qsfp default-mode 4x10G
+!
+service routing protocols model multi-agent
+!
+logging buffered 65535
+logging host 192.168.20.23
+logging source-interface Management0
+!
+hostname spine1
+!
+spanning-tree mode mstp
+!
+management api http-commands
+   no shutdown
+!
+management api gnmi
+   transport grpc default
+!
+management api netconf
+   transport ssh default
+!
+tacacs-server host 192.168.20.2 key 7 060101321F
+!
+aaa group server tacacs+ tac-grp-01
+   server 192.168.20.2
+!
+aaa authentication login default group tac-grp-01 local
+aaa authentication login console local
+aaa authentication enable default group tac-grp-01 local
+aaa authorization exec default group tac-grp-01 local
+aaa accounting exec console start-stop logging
+aaa accounting commands all console start-stop logging
+aaa accounting exec default start-stop group tac-grp-01 logging
+aaa accounting commands all default start-stop group tac-grp-01 logging
+!
+interface Ethernet1
+   description leaf1
+   mtu 9214
+   no switchport
+   ip address 10.0.1.0/31
+!
+interface Ethernet2
+   description leaf2
+   mtu 9214
+   no switchport
+   ip address 10.0.1.2/31
+!
+interface Ethernet3
+   description leaf3
+   mtu 9214
+   no switchport
+   ip address 10.0.1.4/31
+!
+interface Ethernet4
+   description leaf4
+   mtu 9214
+   no switchport
+   ip address 10.0.1.6/31
+!
+interface Ethernet5
+   description leaf5
+   mtu 9214
+   no switchport
+   ip address 10.0.1.8/31
+!
+interface Ethernet6
+   description leaf6
+   mtu 9214
+   no switchport
+   ip address 10.0.1.10/31
+!
+interface Ethernet7
+   description leaf7
+   mtu 9214
+   no switchport
+   ip address 10.0.1.12/31
+!
+interface Ethernet8
+   description leaf8
+   mtu 9214
+   no switchport
+   ip address 10.0.1.14/31
+!
+interface Loopback0
+   ip address 10.0.250.1/32
+!
+interface Management0
+   ip address 192.168.20.141/24
+!
+ip routing
+!
+ip route 0.0.0.0/0 192.168.20.1
+!
+router bgp 65000
+   router-id 10.0.250.1
+   no bgp default ipv4-unicast
+   distance bgp 20 200 200
+   maximum-paths 4 ecmp 64
+   neighbor evpn peer group
+   neighbor evpn next-hop-unchanged
+   neighbor evpn update-source Loopback0
+   neighbor evpn ebgp-multihop 3
+   neighbor evpn send-community extended
+   neighbor evpn maximum-routes 12000 warning-only
+   neighbor 10.0.1.1 remote-as 65001
+   neighbor 10.0.1.3 remote-as 65001
+   neighbor 10.0.1.5 remote-as 65002
+   neighbor 10.0.1.7 remote-as 65002
+   neighbor 10.0.1.9 remote-as 65003
+   neighbor 10.0.1.11 remote-as 65003
+   neighbor 10.0.1.13 remote-as 65004
+   neighbor 10.0.1.15 remote-as 65004
+   neighbor 10.0.250.11 peer group evpn
+   neighbor 10.0.250.11 remote-as 65001
+   neighbor 10.0.250.12 peer group evpn
+   neighbor 10.0.250.12 remote-as 65001
+   neighbor 10.0.250.13 peer group evpn
+   neighbor 10.0.250.13 remote-as 65002
+   neighbor 10.0.250.14 peer group evpn
+   neighbor 10.0.250.14 remote-as 65002
+   neighbor 10.0.250.15 peer group evpn
+   neighbor 10.0.250.15 remote-as 65003
+   neighbor 10.0.250.16 peer group evpn
+   neighbor 10.0.250.16 remote-as 65003
+   neighbor 10.0.250.17 peer group evpn
+   neighbor 10.0.250.17 remote-as 65004
+   neighbor 10.0.250.18 peer group evpn
+   neighbor 10.0.250.18 remote-as 65004
+   !
+   address-family evpn
+      neighbor evpn activate
+   !
+   address-family ipv4
+      neighbor 10.0.1.1 activate
+      neighbor 10.0.1.3 activate
+      neighbor 10.0.1.5 activate
+      neighbor 10.0.1.7 activate
+      neighbor 10.0.1.9 activate
+      neighbor 10.0.1.11 activate
+      neighbor 10.0.1.13 activate
+      neighbor 10.0.1.15 activate
+      network 10.0.250.1/32
+!
+ip tacacs source-interface Management0
+!
+end

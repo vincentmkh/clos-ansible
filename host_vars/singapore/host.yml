@@ -1,0 +1,6 @@
+---
+hostname: leaf1-Singapore
+ip:
+  virtual-router:
+    mac-address:  c0:01:ca:fe:ba:be
+  routing: true

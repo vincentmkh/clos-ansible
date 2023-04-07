@@ -1,0 +1,13 @@
+- name: Configuring devices basic configurations
+  hosts: singapore
+  gather_facts: false
+#  connection: network_cli
+ 
+  roles:
+    - { role: all/foundation }
+    # - { role: all/telemetry }
+# list of other roles action    
+    - { role: leafs/vlans/add_vlans }
+    - { role: all/bgp}
+#    - { role: all/aaa }
+    # - { role: all/save }

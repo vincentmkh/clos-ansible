@@ -1,0 +1,20 @@
+- name: validating devices basic configurations
+  hosts: eos
+  gather_facts: false
+#  connection: network_cli
+ 
+  roles:
+#    - { role: all/foundation }
+    # - { role: all/telemetry }
+# list of other roles action    
+#    - { role: all/aaa }
+#    - { role: all/save }
+
+- name: validating devices configurations
+  hosts: eos
+  gather_facts: false
+#  connection: network_cli
+
+  roles:
+    - { role: leafs/interfaces/validate_interfaces }
+    - { role: leafs/vlans/validate_vlans }

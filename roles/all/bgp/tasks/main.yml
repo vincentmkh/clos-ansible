@@ -1,0 +1,65 @@
+---
+- name: Configure BGP Distance
+  arista.eos.eos_bgp_global:
+    config:
+      as_number: "{{ bgp['as_number'] }}"
+      distance:
+        external: "{{ bgp['distance']['external'] }}"
+        internal: "{{ bgp['distance']['internal'] }}"
+        local: "{{ bgp.distance.internal }}"
+  when:
+    - bgp is defined
+    - bgp.distance is defined
+
+- name: Configure BGP max path & ECMP
+  arista.eos.eos_bgp_global:
+    config:
+      as_number: "{{ bgp['as_number'] }}"
+      maximum_paths:
+        max_equal_cost_paths : "{{ bgp['maximum_paths']['max_equal'] }}"
+        max_installed_ecmp_paths: "{{ bgp['maximum_paths']['ecmp'] }}"
+  when:
+    - bgp is defined
+    - bgp.maximum_paths is defined
+
+- name: Configure no BGP Defaults IPv4 unicast
+  arista.eos.eos_config:
+    lines: 
+    - no bgp default ipv4-unicast
+    parents: router bgp {{ bgp['as_number'] }}
+  when:
+    - bgp.bgp_default['ipv4-unicast'] == false
+
+# - name: set BGP Router id
+#   arista.eos.eos_config:
+#     lines: 
+#     - router-id {{ item.ipv4.address }}  #need to stripe the/32  prefix mask
+#     parents: router bgp {{ bgp['as_number'] }}
+#   when:
+#     - item.name == 'Loopback0'
+#   loop: "{{ interfaces }}" 
+#   tags: currentItem
+
+
+- name: Configure BGP neighbours -- peer group
+  arista.eos.eos_bgp_global:
+    config:
+      as_number: "{{ bgp['as_number'] }}"
+      neighbors:
+      - peer: "{{ item.peer }}"
+        peer_group: "{{ item.peer_group }}"
+        # remote_as: "{{ item.remote_as }}" 
+        # bfd: "{{ item.bfd }}"
+        # update_source: "{{ item.update_source }}"
+        # maximum_received_routes:
+        #   count: "{{ item.maximum_received_routes.count }}"
+        #   warning_only: "{{ item.maximum_received_routes.warning_only }}"
+        # ebgp_multihop:
+        #   ttl: "{{ item.ebgp_multihop.ttl }}"
+        # send_community:
+        #   set: "{{ item.send_community.set }}"
+        #   sub_attribute: "{{ send_community.sub_attribute }}"
+  when:
+    - bgp.neighbors is defined
+  loop: "{{ bgp.neighbors }}"
+  tags: currentItem

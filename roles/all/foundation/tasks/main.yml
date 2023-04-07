@@ -1,0 +1,45 @@
+---
+  # - name: Update hostname
+  #   arista.eos.eos_system:
+  #     hostname: "{{ hostname }}" # "{{ inventory_hostname }}"
+
+  - name: configure DNS lookup sources
+    arista.eos.eos_system:
+      lookup_source: Management0
+
+  - name: configure name servers
+    arista.eos.eos_system:
+      name_servers: "{{ name_server }}"
+
+  - name: Configure NTP
+    arista.eos.eos_ntp_global:
+      config:
+        servers:
+          - server: "{{ ntp_server }}"
+        local_interface: "Management0"
+      #   logging: true
+      # state: merged
+      
+  - name: Enable LLDP service
+    arista.eos.eos_lldp:
+      state: present
+
+  - name: Configure clock source and Timezone
+    arista.eos.eos_config:
+      lines:
+        - clock source ntp
+        - clock timezone Asia/Singapore 
+
+  - name: config logging 
+    arista.eos.eos_logging_global:
+      config:
+        buffered:
+          buffer_size: "{{ syslog['buffer'] }}"
+        hosts:
+          - name: "{{ syslog['server'] }}"
+
+
+  # - name: Enable ipv4 routing
+  #   cisco.ios.ios_config:
+  #     lines:
+  #     - ip routing 

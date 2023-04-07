@@ -1,0 +1,9 @@
+---
+configuration:
+  vlans:
+    vlan:
+      - name: "test-L3-vxlan"
+        vlan_id: "34"
+
+      - name: "mlag-peer"
+        vlan_id: "4090"

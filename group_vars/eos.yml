@@ -1,0 +1,9 @@
+---
+ansible_network_os: eos
+ansible_user: admin
+ansible_ssh_pass: admin
+ansible_become: true
+ansible_become_method: enable
+ansible_connection: network_cli
+# ansible_user: ansible-worker
+# ansible_ssh_pass: Pxacf9d2U7BzQa

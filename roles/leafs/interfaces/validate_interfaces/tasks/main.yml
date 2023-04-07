@@ -1,0 +1,46 @@
+---
+- name: Gather interface facts from devices
+  arista.eos.eos_interfaces:
+    state: gathered
+  register: gathered_interfaces
+  
+- name: display interfaces gathered
+  debug:
+    msg: "{{ gathered_interfaces }}"  
+
+- name: Gather switch interfaces facts from the device
+  arista.eos.l2_interfaces:
+    state: gathered
+  register: gathered_interfaces
+  
+- name: display switch interfaces gathered
+  debug:
+    msg: "{{ gathered_interfaces }}"  
+
+- name: Gather LACP interfaces facts from the device
+  arista.eos.eos_lacp_interfaces:
+    state: gathered
+  register: gathered_interfaces
+  
+- name: display LACP interfaces gathered
+  debug:
+    msg: "{{ gathered_interfaces }}"  
+
+
+- name: Gather routed interfaces facts from the device
+  arista.eos.l3_interfaces:
+    state: gathered
+  register: gathered_interfaces
+  
+- name: display routed interfaces gathered
+  debug:
+    msg: "{{ gathered_interfaces }}"  
+
+- name: Gather LAG interfaces facts from the device
+  arista.eos.lag_interfaces:
+    state: gathered
+  register: gathered_interfaces
+  
+- name: display routed interfaces gathered
+  debug:
+    msg: "{{ gathered_interfaces }}"  

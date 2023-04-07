@@ -1,0 +1,43 @@
+---
+- name: Gather vlans facts from devices
+  arista.eos.eos_vlans:
+    state: gathered
+  register: gathered_vlan
+
+- name: show list of vlans from devices
+  arista.eos.eos_command:
+    commands: 
+    - command: show vlan
+      output: text
+  register: gathered_vlan
+
+
+- name: display vlans gathered
+  debug:
+    msg: "{{ gathered_vlan }}"
+
+# - name: output gathered vlan info into file
+#   copy:
+#     content: "{{ gathered_vlan }}"
+#     dest: validation/vlan_validation.txt
+#   delegate_to: localhost
+  
+
+  
+
+
+
+
+# - name: show vlan
+#   arista.eos.eos_command:
+#     commands: 
+#       - "show vlan"
+#   register: vlan_output
+
+# - set_fact:
+#       vlans : "{{ gathered_vlan['stdout'][0] | clay584.genie.parse_genie(command='show vlan', os='ios') }}"
+
+# - name: Vlan validation
+#   template:
+#     src: vlan_validation.j2
+#     dest: validation/vlan_validation.txt

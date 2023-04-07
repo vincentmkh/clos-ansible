@@ -1,0 +1,9 @@
+---
+hostname: leaf1
+ip:
+  virtual-router:
+    mac-address:  c0:01:ca:fe:ba:be
+  routing: true
+  route:
+  - destination: 0.0.0.0/24
+    next_hop: 192.168.20.1

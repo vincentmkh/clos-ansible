@@ -1,0 +1,13 @@
+---
+- name: Configure interfaces - Status and Descriptions
+  arista.eos.eos_interfaces:
+    config:
+      - name: "{{ item.name }}"
+        description: "{{ item.description }}"
+        enabled: "{{ item.enabled }}"
+#  when: item.ipv4 is defined        
+  loop: "{{ configuration.interfaces }}"
+
+- import_tasks: switched.yml
+- import_tasks: lag.yml
+- import_tasks: routed.yml

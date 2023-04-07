@@ -1,0 +1,10 @@
+---
+- name: Setup TACACS
+  hosts: network
+
+  tasks:
+  - name: Enable TACACS+
+    arista.eos.eos_config:
+      src: tacacs.j2
+    tags: 
+      - aaa

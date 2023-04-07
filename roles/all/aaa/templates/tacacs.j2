@@ -1,0 +1,21 @@
+tacacs-server host {{ tacacs['server'] }} key {{ tacacs['key'] }}
+
+aaa group server tacacs+ tac-grp-01
+   server {{ tacacs['server'] }}
+
+ip tacacs source-interface Management0
+
+aaa authentication login default  group tac-grp-01 local
+aaa authentication enable default group tac-grp-01 local
+
+aaa authorization exec default group tac-grp-01 local
+
+aaa accounting exec default start-stop group tac-grp-01 logging
+aaa accounting commands all default start-stop group tac-grp-01 logging
+
+aaa authentication login console local
+aaa accounting exec console start-stop logging
+aaa accounting commands all console start-stop logging
+
+
+

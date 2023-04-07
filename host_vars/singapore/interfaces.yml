@@ -1,0 +1,120 @@
+---
+interfaces:
+  - name: Port-Channel111
+    description: Host1
+    enabled: true
+    mode: layer2
+    switchport: 
+      mode: trunk
+    mlag: 111
+    spanning-tree: point-to-point
+
+  - name: Port-Channel999
+    description: MLAG Peer
+    enabled: true
+    mode: layer2 
+    switchport:
+      mode: trunk
+      group: mlag-peer
+    spanning-tree: point-to-point
+
+  - name: Ethernet7
+    description: "Host1:eth1"
+    enabled: true
+    mode: layer2
+    channel-group:
+      id: 111
+      mode: active
+
+  - name: Ethernet8
+    description: "Host1:eth2"
+    enabled: true
+    mode: layer2
+    channel-group:
+      id: 111
+      mode: active
+
+  - name: Ethernet9
+    description: "leaf2:eth9 -- mlag peer link"
+    enabled: true
+    mode: layer2
+    channel-group:
+      id: 999
+      mode: active
+
+  - name: Ethernet10
+    description: "leaf2:eth10 -- mlag peer link"
+    enabled: true
+    mode: layer2
+    channel-group:
+      id: 999
+      mode: active
+
+  - name: Ethernet11
+    description: "spine1:eth1"
+    enabled: true
+    mode: layer3
+    mtu: 9214
+    ipv4:
+      address:  10.0.1.1/31
+
+  - name: Ethernet12
+    description: "spine2:eth1"
+    enabled: true
+    mode: layer3
+    mtu: 9214
+    ipv4:
+      address:  10.0.2.1/31
+
+  - name: Loopback0
+    description: "BGP router ID"
+    enabled: true
+    mode: layer3
+    ipv4:
+      address:  10.0.250.11/32
+      virtual: true
+
+  - name: Loopback1
+    description: "Vxlan source"
+    enabled: true
+    mode: layer3
+    ipv4:
+      address:  10.0.255.11/32
+      virtual: true
+
+  - name: Management0
+    description: "Management"
+    enabled: true
+    mode: layer3
+    ipv4:
+      address:  192.168.20.131/24
+      virtual: true
+
+  - name: Vlan40
+    description: "L2 VxLAN"
+    enabled: true
+    mode: layer3
+    ipv4:
+      address:  192.168.215.10/24
+      virtual: true
+
+  - name: Vlan4090
+    description: "MLAG Peer"
+    enabled: true
+    mode: layer3
+    autostate: no
+    ipv4:
+      address:  10.0.199.254/31
+      virtual: true
+
+  - name: Vxlan1
+    description: "leaf2:eth10 -- mlag peer link"
+    enabled: true
+    mode: layer2
+    vxlan:
+      source-interface: Loopback1
+      udp-port: 4789
+      vlan: 
+        id: 40
+        vni: 10040
+      learn-restrict: any

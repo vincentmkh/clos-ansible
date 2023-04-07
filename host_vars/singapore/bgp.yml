@@ -1,0 +1,78 @@
+---
+bgp:
+  as_number: 65001
+  distance:
+    external: 20
+    internal: 200
+    local: 200
+  bgp_default:
+    ipv4-unicast: false
+  maximum_paths:
+    max_equal: 4
+    ecmp: 64
+  neighbors:
+    - peer: underlay
+      remote_as: 65000
+      bfd: enable
+      fall_over: true
+      maximum_received_routes:
+        count: 12000
+        warning_only: true
+    - peer: 10.0.1.0
+      peer_group: underlay
+    - peer: 10.0.2.0
+      peer_group: underlay
+    - peer: underlay_ibgp
+      remote_as:  65001
+      next_hop_self: true
+      bfd: enable
+      fall_over: true
+      maximum_received_routes:
+        count: 12000
+        warning_only: true
+    - peer: 10.0.199.255
+      peer_group: underlay_ibgp
+    - peer: evpn
+      remote_as: 65000
+      bfd: enable
+      fall_over: true
+      update_source: Loopback0
+      ebgp_multihop:
+        ttl: 3
+      maximum_received_routes:
+        count: 12000
+        warning_only: true
+      send_community:
+        set: true
+        sub_attribute: "extended"
+    - peer: 10.0.250.1
+      peer_group: evpn
+    - peer: 10.0.250.2
+      peer_group: evpn
+  vlan: 
+    id: 40
+    rd: "65001:100040"
+    route-target:
+      action: both
+      target: "40:100040"
+    redistribute: learned
+  address-family:
+    - afi: evpn
+      neighbor: 
+        activate: true
+    - afi: ipv4
+      neighbor:
+      - peer: underlay
+        activate: true
+      - peer: underlay_ibgp
+        activate: true
+      - network:
+        - address: 10.0.250.11/32
+        - address: 10.0.255.11/32
+
+
+
+
+    
+
+

@@ -1,0 +1,20 @@
+---
+name_server: 192.168.20.3
+ntp_server: sg.pool.ntp.org
+tftp_server: 192.168.20.27
+
+syslog:
+  server: 192.168.20.23
+  buffer: 65535
+
+sup_admin: netadmin
+sup_password: nimdaten
+enable_secret: k9g3DPHYjNM3Lm
+
+snmp:
+  community: c75yHcTH
+  server: 192.168.20.7
+
+tacacs:
+  key: gns3
+  server: 192.168.20.2
