@@ -9,6 +9,7 @@ Build a clos network using ansible on arista using containerlab
   - https://overlaid.net/2018/08/27/arista-bgp-evpn-overview-and-concepts/
   - https://overlaid.net/2019/01/27/arista-bgp-evpn-configuration-example/
   - https://overlaid.net/2019/02/19/arista-bgp-evpn-ansible-lab/
+  
 This CLOS network have been configured and is currently working.
 
 ## objectives
